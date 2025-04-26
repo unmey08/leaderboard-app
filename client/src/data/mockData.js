@@ -32,14 +32,6 @@ export const data = [
     image: "xyz.jpg",
   },
   {
-    id: 5,
-    name: "Unmey",
-    address: "123 New Street",
-    points: 0,
-    age: 30,
-    image: "xyz.jpg",
-  },
-  {
     id: 6,
     name: "Mahendra",
     address: "123 New Street",

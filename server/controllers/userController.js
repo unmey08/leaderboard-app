@@ -51,6 +51,11 @@ exports.updateUserPoints = async (req, res) => {
       return res.json({ error: "User not found" }).status(404);
     }
     user.points += delta;
+    if (user.points < 0 || user.points > 100) {
+      return res
+        .status(400)
+        .json({ error: "Points must remain between 0 and 100" });
+    }
     await user.save();
     res.json(user).status(200);
   } catch {

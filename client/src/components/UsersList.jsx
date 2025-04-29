@@ -1,13 +1,26 @@
-import { data } from "../data/mockData";
 import User from "./User";
-import { Reorder } from "motion/react";
+import { AnimatePresence, Reorder } from "motion/react";
 
-const UsersList = () => {
+const UsersList = ({ users, setUsers, deleteUser, updateUserPoints }) => {
   return (
-    <Reorder.Group className=" flex flex-col" values={data}>
-      {data.map((item, index) => (
-        <User item={item} index={index} key={item.id} />
-      ))}
+    <Reorder.Group
+      className=" flex flex-col"
+      values={users}
+      onReorder={setUsers}
+      axis="y"
+    >
+      <AnimatePresence>
+        {users.map((item) => (
+          <Reorder.Item value={item.points} key={item._id}>
+            <User
+              item={item}
+              deleteUser={deleteUser}
+              updateUserPoints={updateUserPoints}
+              key={item}
+            />
+          </Reorder.Item>
+        ))}
+      </AnimatePresence>
     </Reorder.Group>
   );
 };

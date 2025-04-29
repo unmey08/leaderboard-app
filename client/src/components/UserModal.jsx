@@ -1,23 +1,28 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose, faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "motion/react";
 
 const UserModal = ({ showUserModal, setShowUserModal, user }) => {
   return (
-    <div
+    <motion.div
       className={`overflow-y-auto overflow-x-hidden fixed z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ${
         showUserModal ? "visible bg-black/90" : "invisible"
       }`}
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      exit={{ scale: 0 }}
+      key="user-modal"
     >
-      <div className="relative p-4 w-full max-w-md max-h-full">
+      <div className="relative w-full max-w-md max-h-full">
         <button
           type="button"
-          className="absolute z-100 left-5/6 top-2 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white hover:cursor-pointer"
+          className="absolute z-100 left-100 top-2 text-gray-400 bg-transparent hover:bg-gray-600 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-700 dark:hover:text-white hover:cursor-pointer"
           data-modal-toggle="crud-modal"
           onClick={() => setShowUserModal(false)}
         >
           <FontAwesomeIcon icon={faClose} size="xl" />
         </button>
-        <div className="flex flex-col items-center relative p-24 w-full max-w-md max-h-full bg-white rounded-lg shadow-sm dark:bg-neutral-800 dark:border-neutral-100">
+        <div className="flex flex-col items-center relative px-12 py-24 w-full max-w-md max-h-full bg-white rounded-lg shadow-sm dark:bg-neutral-800 dark:border-neutral-100 text-center">
           <p className="w-32 h-32 mb-3 rounded-full shadow-lg bg-pink-200 flex items-center justify-center font-bold dark:text-black text-6xl">
             {user.name.slice(0, 1).toUpperCase()}
           </p>
@@ -35,7 +40,7 @@ const UserModal = ({ showUserModal, setShowUserModal, user }) => {
           </span>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 export default UserModal;

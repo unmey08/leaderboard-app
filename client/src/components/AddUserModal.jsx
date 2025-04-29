@@ -1,19 +1,32 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import DOMPurify from "dompurify";
 
 const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const [address, setAddress] = useState("");
-  const handleAddUser = (e) => {
-    e.preventDefault();
-    const newUser = { name, age, address };
-    addUser(newUser);
-    setShowAddUserModal(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm();
+
+  // sanitize input to prevent xss attacks
+  const sanitizeInput = (data) => {
+    return {
+      name: DOMPurify.sanitize(data.name),
+      age: DOMPurify.sanitize(data.age),
+      address: DOMPurify.sanitize(data.address),
+    };
   };
 
+  const onSubmit = (data) => {
+    const sanitizedData = sanitizeInput(data);
+    addUser(sanitizedData);
+    setShowAddUserModal(false);
+    reset(); // Reset the form after submission
+  };
   return (
     <motion.div
       className={`overflow-y-auto overflow-x-hidden fixed z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ${
@@ -39,7 +52,10 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
             </button>
           </div>
 
-          <form className="p-4 md:p-5 text-left" onSubmit={handleAddUser}>
+          <form
+            className="p-4 md:p-5 text-left"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <div className="grid gap-4 mb-4 grid-cols-2">
               <div className="col-span-2">
                 <label
@@ -49,14 +65,20 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
                   Name
                 </label>
                 <input
-                  type="text"
-                  name="name"
                   id="name"
+                  type="text"
+                  {...register("name", {
+                    required: "Name is required.",
+                    maxLength: {
+                      value: 64,
+                      message: "Maximum 64 characters.",
+                    },
+                  })}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-neutral-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
                 />
+                {errors.name && (
+                  <p className="text-red-500 text-sm">{errors.name.message}</p>
+                )}
               </div>
               <div className="col-span-2">
                 <label
@@ -66,14 +88,18 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
                   Age
                 </label>
                 <input
-                  type="number"
-                  name="age"
                   id="age"
+                  type="number"
+                  {...register("age", {
+                    required: "Age is required",
+                    min: { value: 18, message: "Age must be greater than 18." },
+                    max: { value: 80, message: "Age must be less than 80." },
+                  })}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-neutral-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                  value={age}
-                  onChange={(e) => setAge(e.target.value)}
-                  required
                 />
+                {errors.age && (
+                  <p className="text-red-500 text-sm">{errors.age.message}</p>
+                )}
               </div>
               <div className="col-span-2">
                 <label
@@ -85,20 +111,33 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
                 <input
                   id="address"
                   type="text"
-                  name="address"
-                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-neutral-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  required
+                  {...register("address", {
+                    required: "Address is required",
+                    maxLength: {
+                      value: 200,
+                      message: "Maximum 200 characters.",
+                    },
+                  })}
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-neutral-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 />
+                {errors.address && (
+                  <p className="text-red-500 text-sm">
+                    {errors.address.message}
+                  </p>
+                )}
               </div>
             </div>
-            <button
+            <motion.button
               type="submit"
-              className="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              disabled={isSubmitting}
+              className={`text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:cursor-pointer dark:focus:ring-blue-800 ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
               Add user
-            </button>
+            </motion.button>
           </form>
         </div>
       </div>

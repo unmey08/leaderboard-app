@@ -32,9 +32,25 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
       className={`overflow-y-auto overflow-x-hidden fixed z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ${
         showAddUserModal ? "visible bg-black/90" : "invisible"
       }`}
-      initial={{ scale: 0 }}
-      animate={{ scale: 1 }}
-      exit={{ scale: 0 }}
+      initial={{
+        opacity: 0,
+        y: 60,
+        scale: 0.2,
+      }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        transition: {
+          type: "spring",
+          stiffness: 100,
+        },
+      }}
+      exit={{
+        opacity: 0,
+        scale: 0.5,
+        transition: { duration: 0.6 },
+      }}
       key="add-modal"
     >
       <div className="relative p-4 w-full max-w-md max-h-full">

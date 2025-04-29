@@ -10,12 +10,13 @@ const UsersList = ({ users, setUsers, deleteUser, updateUserPoints }) => {
       axis="y"
     >
       <AnimatePresence>
-        {users.map((item) => (
+        {users.map((item, index) => (
           <Reorder.Item value={item.points} key={item._id}>
             <User
               item={item}
               deleteUser={deleteUser}
               updateUserPoints={updateUserPoints}
+              index={index}
               key={item}
             />
           </Reorder.Item>

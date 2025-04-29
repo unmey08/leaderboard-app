@@ -6,7 +6,7 @@ const Pagination = ({ handlePageChange, pagination, totalPages }) => {
       <motion.button
         onClick={() => handlePageChange(-1)}
         disabled={pagination.currentPage === 1}
-        className="bg-neutral-800 hover:bg-neutral-700 text-gray-100 md:w-32 px-4 py-2 rounded-xl cursor-pointer font-semibold disabled:cursor-not-allowed"
+        className="bg-neutral-800 hover:bg-neutral-700 text-gray-100 md:w-32 px-4 py-2 rounded-xl cursor-pointer font-semibold disabled:cursor-not-allowed disabled:bg-neutral-500"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
       >
@@ -18,7 +18,7 @@ const Pagination = ({ handlePageChange, pagination, totalPages }) => {
       <motion.button
         onClick={() => handlePageChange(1)}
         disabled={pagination.currentPage === totalPages}
-        className="bg-neutral-800 hover:bg-neutral-700 text-gray-100 md:w-32 px-4 py-2 rounded-xl cursor-pointer font-semibold disabled:cursor-not-allowed"
+        className="bg-neutral-800 hover:bg-neutral-700 text-gray-100 md:w-32 px-4 py-2 rounded-xl cursor-pointer font-semibold disabled:cursor-not-allowed disabled:bg-neutral-500"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
       >

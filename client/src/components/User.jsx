@@ -2,36 +2,51 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import UserModal from "./UserModal";
-import { AnimatePresence, motion } from "motion/react";
+import { animate, AnimatePresence, motion } from "motion/react";
 import goldMedal from "../assets/gold-medal.png";
 import silverMedal from "../assets/silver-medal.png";
 import bronzeMedal from "../assets/bronze-medal.png";
 
-const User = ({ item, deleteUser, updateUserPoints }) => {
+const User = ({ item, index, deleteUser, updateUserPoints }) => {
   const [showUserModal, setShowUserModal] = useState(false);
-  // const [direction, setDirection] = useState(1);
 
   const handleDelete = (id) => {
     deleteUser(id);
-    // setDirection((prev) => (prev === 1 ? -1 : 1));
   };
 
   return (
-    <div>
+    <motion.div
+      variants={{
+        initial: {
+          opacity: 0,
+          x: -300,
+          y: 0,
+        },
+        animate: (index) => ({
+          opacity: 1,
+          x: 0,
+          transition: {
+            delay: 0.2 * index,
+            ease: ["easeInOut"],
+          },
+        }),
+        exit: {
+          opacity: 0,
+          x: 0,
+          y: 25,
+          transition: {
+            ease: ["easeInOut"],
+          },
+        },
+      }}
+      whileInView="animate"
+      initial="initial"
+      key={item._id}
+      custom={index}
+    >
       <AnimatePresence>
         <motion.div
           className="border border-neutral-800 overflow-hidden my-2 rounded-2xl dark:bg-neutral-800 outline-none text-gray-100 antialiased font-medium text-left"
-          initial={{ x: -500, opacity: 0 }}
-          animate={{
-            x: 0,
-            opacity: 1,
-            transition: { ease: ["easeIn", "easeOut"] },
-          }}
-          exit={{
-            x: -500,
-            opacity: 0,
-            transition: { ease: ["easeIn", "easeOut"] },
-          }}
           key={item._id}
         >
           <div className="flex justify-around items-center">
@@ -48,7 +63,7 @@ const User = ({ item, deleteUser, updateUserPoints }) => {
                 {item.name ? item.name.slice(0, 1).toUpperCase() : ""}
               </p>
               <button
-                className="px-4 py-8 hover:underline hover:cursor-pointer"
+                className="px-4 py-8 hover:underline hover:cursor-pointer font-extrabold text-white hover:text-gray-200"
                 onClick={() => setShowUserModal(true)}
               >
                 {item.name}
@@ -113,26 +128,35 @@ const User = ({ item, deleteUser, updateUserPoints }) => {
                 </div>
               </div>
               <div className="hidden md:flex">
-                <button
+                <motion.button
                   className="bg-neutral-800 hover:bg-neutral-700 text-white border-2 border-neutral-500 w-12 rounded-s-md cursor-pointer p-1 disabled:bg-neutral-600 disabled:hover:cursor-not-allowed"
-                  onClick={() => updateUserPoints(item._id, 10)}
+                  onClick={() => {
+                    updateUserPoints(item._id, 10);
+                  }}
                   disabled={item.points >= 100}
+                  whileTap={{ scale: 0.9 }}
                 >
                   +
-                </button>
-                <button
+                </motion.button>
+                <motion.button
                   className="bg-neutral-800 hover:bg-neutral-700 text-white w-12 border-t border-b border-neutral-500 cursor-pointer p-1 disabled:bg-neutral-600 disabled:hover:cursor-not-allowed"
-                  onClick={() => updateUserPoints(item._id, -10)}
+                  onClick={() => {
+                    updateUserPoints(item._id, -10);
+                  }}
                   disabled={item.points <= 0}
+                  whileTap={{ scale: 0.9 }}
                 >
                   -
-                </button>
-                <button
+                </motion.button>
+                <motion.button
                   className="bg-neutral-800 hover:bg-neutral-700 text-white w-12 border-2 rounded-e-md border-neutral-500 cursor-pointer p-1"
-                  onClick={() => handleDelete(item._id)}
+                  onClick={() => {
+                    handleDelete(item._id);
+                  }}
+                  whileTap={{ scale: 0.9 }}
                 >
-                  <FontAwesomeIcon icon={faTrash} />
-                </button>
+                  <FontAwesomeIcon icon={faTrash} className="text-red-400" />
+                </motion.button>
               </div>
             </div>
           </div>
@@ -148,7 +172,7 @@ const User = ({ item, deleteUser, updateUserPoints }) => {
           />
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 export default User;

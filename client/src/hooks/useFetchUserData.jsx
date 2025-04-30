@@ -11,7 +11,7 @@ const useFetchUserData = (baseUrl) => {
         setIsLoading(true);
         setError(null);
 
-        const result = await fetch(`${baseUrl}/users`);
+        const result = await fetch(`/users`);
 
         if (!result.ok) {
           throw new Error(

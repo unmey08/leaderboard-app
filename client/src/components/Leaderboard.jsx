@@ -57,7 +57,7 @@ const Leaderboard = () => {
   // delete a user and rank existing users again
   const deleteUser = async (id) => {
     try {
-      const response = await fetch(`${API_BASE}/users/${id}`, {
+      const response = await fetch(`/users/${id}`, {
         method: "DELETE",
       });
       if (!response.ok) {
@@ -84,7 +84,7 @@ const Leaderboard = () => {
   // reset all users to 0 points
   const resetPoints = async () => {
     try {
-      const response = await fetch(`${API_BASE}/users/reset`, {
+      const response = await fetch(`/users/reset`, {
         method: "POST",
       });
       if (!response.ok) {
@@ -106,7 +106,7 @@ const Leaderboard = () => {
   // add a new user
   const addUser = async (newUser) => {
     try {
-      const response = await fetch(`${API_BASE}/users`, {
+      const response = await fetch(`/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
@@ -131,7 +131,7 @@ const Leaderboard = () => {
   // update points for a user
   const updateUserPoints = async (id, delta) => {
     try {
-      const response = await fetch(`${API_BASE}/users/${id}/points`, {
+      const response = await fetch(`/users/${id}/points`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ delta }),

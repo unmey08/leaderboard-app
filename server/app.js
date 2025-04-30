@@ -3,6 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const userRoutes = require("./routes/userRoutes");
 const dotenv = require("dotenv");
+const path = require("path");
 
 dotenv.config();
 
@@ -32,5 +33,14 @@ const connectDB = async () => {
 connectDB();
 
 app.use("/users", userRoutes);
+
+__dirname = path.resolve();
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/client/dist")));
+  app.get(/(.*)/, (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"));
+  });
+}
 
 module.exports = app;

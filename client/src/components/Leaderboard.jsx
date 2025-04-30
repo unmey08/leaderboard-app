@@ -13,7 +13,7 @@ import Pagination from "./Pagination";
 import useFetchUserData from "../hooks/useFetchUserData";
 import { sortData, assignRanks } from "../utils/dataUtils";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
+const API_BASE = "https://leaderboard-app-inky.vercel.app";
 
 const Leaderboard = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);

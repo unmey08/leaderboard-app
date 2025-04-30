@@ -1,7 +1,7 @@
 {
   "name": "leaderboard-app",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is the backend of the leaderboard application",
   "main": "server.js",
   "scripts": {
     "dev": "NODE_ENV=development nodemon server/server.js",
@@ -11,7 +11,7 @@
   "keywords": [],
   "author": "Unmey Mahaddalkar",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",

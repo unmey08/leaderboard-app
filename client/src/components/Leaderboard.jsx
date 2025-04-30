@@ -13,14 +13,12 @@ import Pagination from "./Pagination";
 import useFetchUserData from "../hooks/useFetchUserData";
 import { sortData, assignRanks } from "../utils/dataUtils";
 
-const API_BASE = "https://leaderboard-app-inky.vercel.app";
-
 const Leaderboard = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [showUserModal, setShowUserModal] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [searchText, setSearchText] = useState("");
-  const { users, setUsers, isLoading, error } = useFetchUserData(API_BASE);
+  const { users, setUsers, isLoading, error } = useFetchUserData();
   const [alphabetSortOrder, setAlphabetSortOrder] = useState("default");
   const [pointsSortOrder, setPointsSortOrder] = useState("desc");
   const [alertMessage, setAlertMessage] = useState({
@@ -202,6 +200,10 @@ const Leaderboard = () => {
     };
   }, [showAddUserModal]);
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
     <div className="w-full md:w-3/4 mx-auto">
       <AnimatePresence>
@@ -222,13 +224,15 @@ const Leaderboard = () => {
           />
         )}
       </AnimatePresence>
-      <div className="py-8">
-        <h1 className="text-4xl font-semibold mb-8">Leaderboard 🏆</h1>
-        <div className="flex justify-between font-semibold flex-col md:flex-row">
+      <div className="py-2 md:py-8">
+        <h1 className="text-4xl font-semibold mb-8 text-slate-50">
+          Leaderboard 🏆
+        </h1>
+        <div className="flex justify-between font-semibold flex-col md:flex-row ">
           <Searchbar searchText={searchText} handleSearch={handleSearch} />
           <div className="mt-4 md:mt-0 flex gap-4 justify-between">
             <motion.button
-              className="bg-neutral-800 hover:bg-neutral-700 text-white px-4 py-2 rounded-lg hover:cursor-pointer"
+              className="bg-slate-600/40 hover:bg-slate-600/60 text-white px-4 py-2 rounded-lg hover:cursor-pointer shadow-lg shadow-violet-700"
               onClick={() => setShowAddUserModal(true)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -236,7 +240,7 @@ const Leaderboard = () => {
               Add user
             </motion.button>
             <motion.button
-              className="bg-neutral-800 hover:bg-neutral-700 text-white px-4 py-2 rounded-lg hover:cursor-pointer"
+              className="bg-slate-600/40 hover:bg-slate-600/60 text-white px-4 py-2 rounded-lg hover:cursor-pointer shadow-lg shadow-violet-700"
               onClick={resetPoints}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -246,35 +250,35 @@ const Leaderboard = () => {
           </div>
         </div>
         {alertMessage.visible && <Alert alertMessage={alertMessage} />}
-        <Headers
-          sortUsersAlphabetically={() =>
-            sortUsers("name", alphabetSortOrder, setAlphabetSortOrder)
-          }
-          sortUsersPoints={() =>
-            sortUsers("points", pointsSortOrder, setPointsSortOrder)
-          }
-          alphabetSortOrder={alphabetSortOrder}
-          pointsSortOrder={pointsSortOrder}
-        />
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <>
-            <UsersList
-              users={paginatedUsers}
-              deleteUser={deleteUser}
-              updateUserPoints={updateUserPoints}
-              setShowUserModal={setShowUserModal}
-              setCurrentUser={setCurrentUser}
-            />
-            {filteredData.length === 0 && (
-              <p className="text-xl font-bold my-10">No users found</p>
-            )}
-          </>
-        )}
-        {error && (
-          <p className="text-xl font-bold my-10">Error fetching data.</p>
-        )}
+        <div className="bg-white/90 rounded-2xl p-4 mt-4 md:mt-10">
+          <Headers
+            sortUsersAlphabetically={() =>
+              sortUsers("name", alphabetSortOrder, setAlphabetSortOrder)
+            }
+            sortUsersPoints={() =>
+              sortUsers("points", pointsSortOrder, setPointsSortOrder)
+            }
+            alphabetSortOrder={alphabetSortOrder}
+            pointsSortOrder={pointsSortOrder}
+          />
+          <UsersList
+            users={paginatedUsers}
+            deleteUser={deleteUser}
+            updateUserPoints={updateUserPoints}
+            setShowUserModal={setShowUserModal}
+            setCurrentUser={setCurrentUser}
+          />
+          {filteredData.length === 0 && (
+            <p className="text-xl font-bold my-10 text-slate-700">
+              No users found
+            </p>
+          )}
+          {error && (
+            <p className="text-xl font-bold my-10 text-slate-700">
+              Error fetching data.
+            </p>
+          )}
+        </div>
         <Pagination
           pagination={pagination}
           totalPages={totalPages}

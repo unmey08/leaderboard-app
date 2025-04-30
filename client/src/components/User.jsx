@@ -37,8 +37,8 @@ const User = ({
         }),
         exit: {
           opacity: 0,
-          x: 0,
-          y: 25,
+          x: -300,
+          y: 0,
           transition: {
             ease: ["easeInOut"],
           },
@@ -51,24 +51,32 @@ const User = ({
     >
       <AnimatePresence>
         <motion.div
-          className="border border-neutral-800 overflow-hidden my-2 rounded-2xl dark:bg-neutral-800 outline-none text-gray-100 antialiased font-medium text-left"
+          className="border border-slate-100 overflow-hidden my-2 rounded-2xl dark:bg-white outline-none text-gray-100 antialiased font-medium text-left shadow-lg shadow-slate-300"
           key={item._id}
         >
           <div className="flex justify-around items-center">
-            {item.rank === 1 && <img src={goldMedal} className="h-8 w-8" />}
-            {item.rank === 2 && <img src={silverMedal} className="h-8 w-8" />}
-            {item.rank === 3 && <img src={bronzeMedal} className="h-8 w-8" />}
-            {item.rank > 3 && (
-              <p className="w-8 flex text-xl font-extrabold justify-center">
-                {item.rank}
-              </p>
-            )}
+            <div className="w-1/10">
+              {item.rank === 1 && <img src={goldMedal} className="h-8 w-8" />}
+              {item.rank === 2 && <img src={silverMedal} className="h-8 w-8" />}
+              {item.rank === 3 && <img src={bronzeMedal} className="h-8 w-8" />}
+              {item.rank > 3 && (
+                <p className="w-8 flex text-xl font-bold justify-center border border-slate-700 text-slate-700 rounded-full">
+                  {item.rank}
+                </p>
+              )}
+            </div>
             <div className="w-1/2 flex items-center">
-              <p className="hidden md:flex rounded-full bg-pink-200 w-10 h-10 shrink-0 grow-0 items-center justify-center text-black">
+              <p
+                className="hidden md:flex rounded-full bg-pink-200 w-10 h-10 shrink-0 grow-0 items-center justify-center text-black hover:cursor-pointer hover:border-2"
+                onClick={() => {
+                  setShowUserModal(true);
+                  setCurrentUser(item);
+                }}
+              >
                 {item.name ? item.name.slice(0, 1).toUpperCase() : ""}
               </p>
               <button
-                className="px-4 py-8 hover:underline hover:cursor-pointer font-extrabold text-white text-left hover:text-gray-200"
+                className="px-4 py-8 hover:underline hover:cursor-pointer font-bold text-slate-700 text-left hover:text-slate-950"
                 onClick={() => {
                   setShowUserModal(true);
                   setCurrentUser(item);
@@ -91,15 +99,15 @@ const User = ({
                   >
                     <FontAwesomeIcon
                       icon={faEllipsisV}
-                      className="text-white"
+                      className="text-slate-700"
                     />
                   </button>
                   {isDropdownOpen && (
-                    <div className="absolute right-10 z-100 w-44 bg-white border border-gray-200 rounded-md shadow-lg dark:bg-neutral-800 dark:border-gray-400 font-bold">
-                      <ul className="py-1">
+                    <div className="absolute right-10 z-100 w-44 bg-white border border-gray-200 rounded-md shadow-lg font-bold">
+                      <ul className="py-1 text-slate-700">
                         <li>
                           <button
-                            className="block px-4 py-2 text-sm text-gray-100 hover:bg-gray-100 w-full text-left dark:text-gray-200 dark:hover:bg-gray-700"
+                            className="block px-4 py-2 text-sm w-full text-left"
                             onClick={() => {
                               updateUserPoints(item._id, 10);
                               setIsDropdownOpen(false);
@@ -110,7 +118,7 @@ const User = ({
                         </li>
                         <li>
                           <button
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left dark:text-gray-200 dark:hover:bg-gray-700"
+                            className="block px-4 py-2 text-sm w-full text-left"
                             onClick={() => {
                               updateUserPoints(item._id, -10);
                               setIsDropdownOpen(false);
@@ -121,7 +129,7 @@ const User = ({
                         </li>
                         <li>
                           <button
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left dark:text-gray-200 dark:hover:bg-gray-700"
+                            className="block px-4 py-2 text-sm w-full text-left"
                             onClick={() => {
                               handleDelete(item._id);
                               setIsDropdownOpen(false);
@@ -137,31 +145,34 @@ const User = ({
               </div>
               <div className="hidden md:flex">
                 <motion.button
-                  className="bg-neutral-800 hover:bg-neutral-700 text-white border-2 border-neutral-500 w-12 rounded-s-md cursor-pointer p-1 disabled:bg-neutral-600 disabled:hover:cursor-not-allowed"
+                  className="bg-white hover:bg-slate-100 text-slate-700 border-2 border-neutral-500 w-12 rounded-s-md cursor-pointer p-1 disabled:bg-gray-200 disabled:hover:cursor-not-allowed font-extrabold"
                   onClick={() => {
                     updateUserPoints(item._id, 10);
                   }}
                   disabled={item.points >= 100}
                   whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.05 }}
                 >
                   +
                 </motion.button>
                 <motion.button
-                  className="bg-neutral-800 hover:bg-neutral-700 text-white w-12 border-t border-b border-neutral-500 cursor-pointer p-1 disabled:bg-neutral-600 disabled:hover:cursor-not-allowed"
+                  className="bg-white hover:bg-slate-100 text-slate-700 w-12 border-t-2 border-b-2 border-neutral-500 cursor-pointer p-1 disabled:bg-gray-200 disabled:hover:cursor-not-allowed font-extrabold"
                   onClick={() => {
                     updateUserPoints(item._id, -10);
                   }}
                   disabled={item.points <= 0}
                   whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.05 }}
                 >
                   -
                 </motion.button>
                 <motion.button
-                  className="bg-neutral-800 hover:bg-neutral-700 text-white w-12 border-2 rounded-e-md border-neutral-500 cursor-pointer p-1"
+                  className="bg-white hover:bg-slate-100 text-slate-700 w-12 border-2 rounded-e-md border-neutral-500 cursor-pointer p-1"
                   onClick={() => {
                     handleDelete(item._id);
                   }}
                   whileTap={{ scale: 0.9 }}
+                  whileHover={{ scale: 1.05 }}
                 >
                   <FontAwesomeIcon icon={faTrash} className="text-red-400" />
                 </motion.button>

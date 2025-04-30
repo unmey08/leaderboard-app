@@ -1,15 +1,7 @@
 const Alert = ({ alertMessage }) => {
-  const textColor =
-    alertMessage.type === "success"
-      ? "dark:text-green-400"
-      : alertMessage.type === "info"
-      ? "dark:text-blue-400"
-      : alertMessage.type === "danger"
-      ? "dark:text-red-400"
-      : "";
   return (
     <div
-      className={`flex items-center p-4 mt-8 text-md text-neutral-800 rounded-lg dark:bg-neutral-800 ${textColor} font-bold text-left`}
+      className="flex items-center p-4 mt-8 text-md rounded-lg bg-slate-600/60 text-white font-bold text-left"
       role="alert"
     >
       <svg

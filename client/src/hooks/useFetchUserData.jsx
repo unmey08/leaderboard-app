@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const useFetchUserData = (baseUrl) => {
+const useFetchUserData = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -48,7 +48,7 @@ const useFetchUserData = (baseUrl) => {
     };
 
     fetchUserData();
-  }, [baseUrl]);
+  }, []);
 
   return { users, setUsers, isLoading, error };
 };

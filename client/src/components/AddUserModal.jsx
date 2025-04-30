@@ -28,40 +28,40 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
     reset(); // Reset the form after submission
   };
   return (
-    <motion.div
+    <div
       className={`overflow-y-auto overflow-x-auto absolute z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ${
-        showAddUserModal ? "visible bg-black/90" : "invisible"
+        showAddUserModal ? "visible bg-slate-700/50" : "invisible"
       }`}
-      initial={{
-        opacity: 0,
-        y: 60,
-        scale: 0.2,
-      }}
-      animate={{
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        transition: {
-          type: "spring",
-          stiffness: 100,
-        },
-      }}
-      exit={{
-        opacity: 0,
-        scale: 0.5,
-        transition: { duration: 0.6 },
-      }}
-      key="add-modal"
     >
-      <div className="p-4 w-full max-w-md max-h-full">
-        <div className="relative bg-white rounded-lg shadow-sm dark:bg-neutral-800 dark:border-neutral-100">
-          <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-              Add User
-            </h3>
+      <motion.div
+        className="p-4 w-full max-w-md max-h-full"
+        initial={{
+          opacity: 0,
+          y: 60,
+          scale: 0.2,
+        }}
+        animate={{
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          transition: {
+            type: "spring",
+            stiffness: 200,
+          },
+        }}
+        exit={{
+          opacity: 0,
+          scale: 0.5,
+          transition: { duration: 0.2 },
+        }}
+        key="add-modal"
+      >
+        <div className="relative bg-slate-50 rounded-lg shadow-sm">
+          <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
+            <h3 className="text-lg font-semibold text-slate-700 ">Add User</h3>
             <button
               type="button"
-              className="bg-transparent hover:text-gray-400 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center text-gray-400 hover:cursor-pointer dark:hover:bg-gray-700 dark:hover:text-white"
+              className="bg-transparent hover:text-gray-600 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center text-slate-700 hover:cursor-pointer"
               onClick={() => setShowAddUserModal(false)}
             >
               <FontAwesomeIcon icon={faClose} size="xl" />
@@ -76,7 +76,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
               <div className="col-span-2">
                 <label
                   htmlFor="name"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-700"
                 >
                   Name
                 </label>
@@ -94,7 +94,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
                       message: "Name can only contain alphabets.",
                     },
                   })}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-neutral-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  className="bg-white border border-gray-300 text-slate-700 font-bold text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm">{errors.name.message}</p>
@@ -103,7 +103,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
               <div className="col-span-2">
                 <label
                   htmlFor="age"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-700"
                 >
                   Age
                 </label>
@@ -115,7 +115,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
                     min: { value: 18, message: "Age must be greater than 18." },
                     max: { value: 80, message: "Age must be less than 80." },
                   })}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-neutral-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  className="bg-white border border-gray-300 text-slate-700 font-bold text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 />
                 {errors.age && (
                   <p className="text-red-500 text-sm">{errors.age.message}</p>
@@ -124,7 +124,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
               <div className="col-span-2">
                 <label
                   htmlFor="address"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  className="block mb-2 text-sm font-medium text-slate-700"
                 >
                   Address
                 </label>
@@ -138,7 +138,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
                       message: "Maximum 200 characters.",
                     },
                   })}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-neutral-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                  className="bg-white border border-gray-300 text-slate-700 font-bold text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                 />
                 {errors.address && (
                   <p className="text-red-500 text-sm">
@@ -150,7 +150,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
             <motion.button
               type="submit"
               disabled={isSubmitting}
-              className={`text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:cursor-pointer dark:focus:ring-blue-800 ${
+              className={`text-white inline-flex items-center bg-violet-600 hover:bg-violet-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:cursor-pointer ${
                 isSubmitting ? "opacity-50 cursor-not-allowed" : ""
               }`}
               whileHover={{ scale: 1.1 }}
@@ -160,8 +160,8 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
             </motion.button>
           </form>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
 export default AddUserModal;

@@ -12,10 +12,10 @@ const Headers = ({
   pointsSortOrder,
 }) => {
   return (
-    <div className="flex justify-around items-center font-bold pt-8">
-      <p className="w-1/10 hidden md:block">Rank</p>
+    <div className="flex justify-around items-center font-bold md:pt-8 text-slate-700">
+      <p className="w-1/10 hidden text-left md:block">Rank</p>
       <div
-        className="w-1/3 text-center md:text-left hover:cursor-pointer ml-5 md:ml-0"
+        className="w-1/2 md:text-left hover:cursor-pointer md:ml-0"
         onClick={sortUsersAlphabetically}
       >
         Name{" "}
@@ -30,14 +30,17 @@ const Headers = ({
           className="ml-1"
         />
       </div>
-      <div className="w-1/2 hover:cursor-pointer" onClick={sortUsersPoints}>
+      <div
+        className="w-1/5 hover:cursor-pointer text-left"
+        onClick={sortUsersPoints}
+      >
         Points{" "}
         <FontAwesomeIcon
           icon={pointsSortOrder === "desc" ? faSortDown : faSortUp}
           className="ml-1"
         />
       </div>
-      <p className="w-1/10 text-left hidden md:block">Actions</p>
+      <p className="w-1/9 text-left hidden md:block">Actions</p>
     </div>
   );
 };

@@ -2,7 +2,7 @@
   "name": "leaderboard-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "dev": "NODE_ENV=development nodemon server/server.js",
     "build": "npm install",

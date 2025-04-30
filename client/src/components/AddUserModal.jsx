@@ -29,7 +29,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
   };
   return (
     <motion.div
-      className={`overflow-y-auto overflow-x-hidden fixed z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ${
+      className={`overflow-y-auto overflow-x-auto absolute z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ${
         showAddUserModal ? "visible bg-black/90" : "invisible"
       }`}
       initial={{
@@ -53,7 +53,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
       }}
       key="add-modal"
     >
-      <div className="relative p-4 w-full max-w-md max-h-full">
+      <div className="p-4 w-full max-w-md max-h-full">
         <div className="relative bg-white rounded-lg shadow-sm dark:bg-neutral-800 dark:border-neutral-100">
           <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -88,6 +88,10 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
                     maxLength: {
                       value: 64,
                       message: "Maximum 64 characters.",
+                    },
+                    pattern: {
+                      value: /^[A-Za-z\s]+$/,
+                      message: "Name can only contain alphabets.",
                     },
                   })}
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-neutral-800 dark:border-gray-500 dark:placeholder-gray-400 dark:text-gray-100 dark:focus:ring-primary-500 dark:focus:border-primary-500"

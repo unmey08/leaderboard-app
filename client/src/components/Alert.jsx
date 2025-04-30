@@ -9,7 +9,7 @@ const Alert = ({ alertMessage }) => {
       : "";
   return (
     <div
-      className={`flex items-center p-4 mt-8 text-md text-neutral-800 rounded-lg dark:bg-neutral-800 ${textColor} font-bold`}
+      className={`flex items-center p-4 mt-8 text-md text-neutral-800 rounded-lg dark:bg-neutral-800 ${textColor} font-bold text-left`}
       role="alert"
     >
       <svg

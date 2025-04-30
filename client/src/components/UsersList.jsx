@@ -1,7 +1,14 @@
 import User from "./User";
 import { AnimatePresence, Reorder } from "motion/react";
 
-const UsersList = ({ users, setUsers, deleteUser, updateUserPoints }) => {
+const UsersList = ({
+  users,
+  setUsers,
+  deleteUser,
+  updateUserPoints,
+  setShowUserModal,
+  setCurrentUser,
+}) => {
   return (
     <Reorder.Group
       className=" flex flex-col"
@@ -18,6 +25,8 @@ const UsersList = ({ users, setUsers, deleteUser, updateUserPoints }) => {
               updateUserPoints={updateUserPoints}
               index={index}
               key={item}
+              setShowUserModal={setShowUserModal}
+              setCurrentUser={setCurrentUser}
             />
           </Reorder.Item>
         ))}

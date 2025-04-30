@@ -1,22 +1,25 @@
-import { useState, useMemo } from "react";
-import AddUserModal from "./addUserModal";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import DOMPurify from "dompurify";
+
+import AddUserModal from "./AddUserModal";
+import UserModal from "./UserModal";
 import Headers from "./Headers";
 import Searchbar from "./Searchbar";
 import UsersList from "./UsersList";
 import Loader from "./Loader";
-import { AnimatePresence, motion } from "motion/react";
 import Alert from "./Alert";
-import useFetchUserData from "../hooks/useFetchUserData";
-import DOMPurify from "dompurify";
 import Pagination from "./Pagination";
+import useFetchUserData from "../hooks/useFetchUserData";
+import { sortData, assignRanks } from "../utils/dataUtils";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 const Leaderboard = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
   const [searchText, setSearchText] = useState("");
-  // const [users, setUsers] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
   const { users, setUsers, isLoading, error } = useFetchUserData(API_BASE);
   const [alphabetSortOrder, setAlphabetSortOrder] = useState("default");
   const [pointsSortOrder, setPointsSortOrder] = useState("desc");
@@ -29,171 +32,78 @@ const Leaderboard = () => {
     currentPage: 1,
     itemsPerPage: 5,
   });
+  const addUserModalRef = useRef();
 
-  // sort users alphabetically
-  const sortUsersAlphabetically = () => {
-    let sortedData = [];
-    setAlphabetSortOrder((prev) =>
-      prev === "default" ? "asc" : prev === "asc" ? "desc" : "asc"
-    );
-    if (alphabetSortOrder === "asc" || alphabetSortOrder === "default") {
-      sortedData = users.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (alphabetSortOrder === "desc") {
-      sortedData = users.sort((a, b) => b.name.localeCompare(a.name));
-    }
-    setUsers(sortedData);
+  // Sorting handlers
+  const toggleSortOrder = (currentOrder) =>
+    currentOrder === "asc" ? "desc" : "asc";
+
+  // sort users alphabetically and by points
+  const sortUsers = (key, sortOrder, setSortOrder) => {
+    const newOrder = toggleSortOrder(sortOrder);
+    const sortedData =
+      key === "name"
+        ? [...users].sort((a, b) =>
+            newOrder === "asc"
+              ? a.name.localeCompare(b.name)
+              : b.name.localeCompare(a.name)
+          )
+        : sortData(users, key, newOrder);
+
+    setSortOrder(newOrder);
+    setUsers(assignRanks(sortedData));
   };
 
-  // sort by points
-  const sortUsersPoints = () => {
-    let sortedData = [];
-    setPointsSortOrder((prev) =>
-      prev === "default" ? "asc" : prev === "asc" ? "desc" : "asc"
-    );
-    if (pointsSortOrder === "asc") {
-      sortedData = users.sort((a, b) => a.points - b.points);
-    } else if (pointsSortOrder === "desc") {
-      sortedData = users.sort((a, b) => b.points - a.points);
-    }
-    setUsers(sortedData);
-  };
-
-  //delete a user
+  // delete a user and rank existing users again
   const deleteUser = async (id) => {
     try {
       const response = await fetch(`${API_BASE}/users/${id}`, {
         method: "DELETE",
       });
-
       if (!response.ok) {
-        throw new Error(
-          `Failed to delete user with ID ${id}: ${response.statusText}`
-        );
+        throw new Error(response.statusText);
       }
 
-      // Update state after successful deletion
       const deletedUser = users.filter((user) => user._id === id)[0];
-      const newUsers = users.filter((user) => user._id !== id);
-      const sortedData = newUsers.sort((a, b) => b.points - a.points);
-      let rank = 1;
-      for (let i = 0; i < sortedData.length; i++) {
-        // increase rank only if current score less than previous
-        if (i > 0 && sortedData[i].points < sortedData[i - 1].points) {
-          rank++;
-        }
-        sortedData[i].rank = rank;
-      }
-      setUsers(sortedData);
+      const updatedUsers = users.filter((user) => user._id !== id);
+      setUsers(assignRanks(updatedUsers));
       setAlertMessage({
-        name: deletedUser.name,
         type: "danger",
+        name: deletedUser.name,
         visible: true,
       });
-      setTimeout(() => {
-        setAlertMessage({ type: "", name: "", visible: false });
-      }, 5000);
-    } catch (error) {
-      console.error("Error deleting user:", error);
+      setTimeout(
+        () => setAlertMessage({ type: "", name: "", visible: false }),
+        5000
+      );
+    } catch (err) {
+      console.error("Error deleting user:", err);
     }
   };
 
-  // reset points of all users to zero
+  // reset all users to 0 points
   const resetPoints = async () => {
     try {
       const response = await fetch(`${API_BASE}/users/reset`, {
         method: "POST",
       });
-
       if (!response.ok) {
-        throw new Error(`Failed to reset points: ${response.statusText}`);
+        throw new Error(response.statusText);
       }
 
-      // Update all users' points to 0 after successful request
-      const sortedData = users.sort((a, b) => b.points - a.points);
-      let rank = 1;
-      for (let i = 0; i < sortedData.length; i++) {
-        // increase rank only if current score less than previous
-        if (i > 0 && sortedData[i].points < sortedData[i - 1].points) {
-          rank++;
-        }
-        sortedData[i].rank = rank;
-        sortedData[i].points = 0;
-      }
-      setUsers(sortedData);
-      // setUsers((users) => users.map((user) => ({ ...user, points: 0 })));
-      setAlertMessage({
-        name: "",
-        type: "info",
-        visible: true,
-      });
-      setTimeout(() => {
-        setAlertMessage({ type: "", name: "", visible: false });
-      }, 5000);
-    } catch (error) {
-      console.error("Error resetting points:", error);
+      const updatedUsers = users.map((user) => ({ ...user, points: 0 }));
+      setUsers(assignRanks(updatedUsers));
+      setAlertMessage({ type: "info", visible: true });
+      setTimeout(
+        () => setAlertMessage({ type: "", name: "", visible: false }),
+        5000
+      );
+    } catch (err) {
+      console.error("Error resetting points:", err);
     }
   };
 
-  // search functionality
-  const handleSearch = (e) => {
-    const searchValue = e.target.value;
-    const sanitizedSearchText = DOMPurify.sanitize(searchValue);
-    setSearchText(sanitizedSearchText);
-  };
-
-  const filteredData = useMemo(
-    () =>
-      searchText !== ""
-        ? users.filter((user) =>
-            user.name.toLowerCase().includes(searchText.toLowerCase())
-          )
-        : users,
-    [users, searchText]
-  );
-
-  //update points
-  const updateUserPoints = async (id, delta) => {
-    const user = users.filter((user) => user._id === id)[0];
-    if (user.points >= 0 && user.points <= 100) {
-      try {
-        const response = await fetch(`${API_BASE}/users/${id}/points`, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ delta }),
-        });
-
-        if (!response.ok) {
-          throw new Error(
-            `Failed to update points for user ${id}: ${response.statusText}`
-          );
-        }
-
-        const updatedUser = await response.json();
-
-        // Update the users state with the updated user data
-        const updatedUsersData = users.map((user) =>
-          user._id === id ? updatedUser : user
-        );
-
-        // Sort the users and assign ranks
-        const sortedData = updatedUsersData.sort((a, b) => b.points - a.points);
-
-        let rank = 1;
-        for (let i = 0; i < sortedData.length; i++) {
-          // increase rank only if current score less than previous
-          if (i > 0 && sortedData[i].points < sortedData[i - 1].points) {
-            rank++;
-          }
-          sortedData[i].rank = rank;
-        }
-        setUsers(sortedData);
-      } catch (error) {
-        console.error("Error updating user points:", error);
-      }
-    }
-  };
-
-  //add a user
+  // add a new user
   const addUser = async (newUser) => {
     try {
       const response = await fetch(`${API_BASE}/users`, {
@@ -201,46 +111,61 @@ const Leaderboard = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newUser),
       });
-
       if (!response.ok) {
-        throw new Error(`Failed to add user: ${response.statusText}`);
+        throw new Error(response.statusText);
       }
 
       const createdUser = await response.json();
-
-      // Update the users state with the newly added user
-      const updatedUsers = [...users, createdUser.data];
-
-      const sortedData = updatedUsers.sort((a, b) => b.points - a.points);
-
-      let rank = 1;
-      for (let i = 0; i < sortedData.length; i++) {
-        // increase rank only if current score less than previous
-        if (i > 0 && sortedData[i].points < sortedData[i - 1].points) {
-          rank++;
-        }
-        sortedData[i].rank = rank;
-      }
-      // setUsers(sortedData)
-      if (sortedData.length > 1) {
-        setUsers(sortedData);
-      } else {
-        sortedData[0].rank = 1;
-        setUsers(sortedData);
-      }
-      setAlertMessage({
-        name: newUser.name,
-        type: "success",
-        visible: true,
-      });
-      setTimeout(() => {
-        setAlertMessage({ type: "", name: "", visible: false });
-      }, 5000);
-    } catch (error) {
-      console.error("Error adding user:", error);
+      const updatedUsers = assignRanks([...users, createdUser.data]);
+      setUsers([...updatedUsers]);
+      setAlertMessage({ type: "success", name: newUser.name, visible: true });
+      setTimeout(
+        () => setAlertMessage({ type: "", name: "", visible: false }),
+        5000
+      );
+    } catch (err) {
+      console.error("Error adding user:", err);
     }
   };
 
+  // update points for a user
+  const updateUserPoints = async (id, delta) => {
+    try {
+      const response = await fetch(`${API_BASE}/users/${id}/points`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ delta }),
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+
+      const updatedUser = await response.json();
+      const updatedUsers = users.map((user) =>
+        user._id === id ? updatedUser : user
+      );
+      setUsers(assignRanks(sortData(updatedUsers, "points", "desc")));
+    } catch (err) {
+      console.error("Error updating user points:", err);
+    }
+  };
+
+  const handleSearch = (e) => {
+    setSearchText(DOMPurify.sanitize(e.target.value));
+  };
+
+  // filter data based on search
+  const filteredData = useMemo(
+    () =>
+      searchText
+        ? users.filter((user) =>
+            user.name.toLowerCase().includes(searchText.toLowerCase())
+          )
+        : users,
+    [users, searchText]
+  );
+
+  // show 5 users per page
   const paginatedUsers = filteredData.slice(
     (pagination.currentPage - 1) * pagination.itemsPerPage,
     pagination.currentPage * pagination.itemsPerPage
@@ -258,6 +183,25 @@ const Leaderboard = () => {
     }));
   };
 
+  const handleClickOutside = (e) => {
+    if (
+      addUserModalRef.current &&
+      !addUserModalRef.current.contains(e.target)
+    ) {
+      setShowAddUserModal(false);
+    }
+  };
+
+  useEffect(() => {
+    if (showAddUserModal) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showAddUserModal]);
+
   return (
     <div className="w-full md:w-3/4 mx-auto">
       <AnimatePresence>
@@ -266,21 +210,25 @@ const Leaderboard = () => {
             showAddUserModal={showAddUserModal}
             setShowAddUserModal={setShowAddUserModal}
             addUser={addUser}
-            key="add-user-modal"
+            ref={addUserModalRef}
+          />
+        )}
+        {showUserModal && (
+          <UserModal
+            showUserModal={showUserModal}
+            setShowUserModal={setShowUserModal}
+            user={currentUser}
+            key="user-modal"
           />
         )}
       </AnimatePresence>
       <div className="py-8">
-        <div>
-          <h1 className="text-4xl font-semibold leading-tight mb-8">
-            Leaderboard 🏆
-          </h1>
-        </div>
+        <h1 className="text-4xl font-semibold mb-8">Leaderboard 🏆</h1>
         <div className="flex justify-between font-semibold flex-col md:flex-row">
           <Searchbar searchText={searchText} handleSearch={handleSearch} />
-          <div className="mt-4 md:mt-0 w-full md:w-1/3 flex justify-between md:justify-around">
+          <div className="mt-4 md:mt-0 flex gap-4 justify-between">
             <motion.button
-              className="bg-neutral-800 hover:bg-neutral-700 text-gray-100 md:w-32 px-4 py-2 rounded-xl cursor-pointer"
+              className="bg-neutral-800 hover:bg-neutral-700 text-white px-4 py-2 rounded-lg hover:cursor-pointer"
               onClick={() => setShowAddUserModal(true)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -288,7 +236,7 @@ const Leaderboard = () => {
               Add user
             </motion.button>
             <motion.button
-              className="bg-neutral-800 hover:bg-neutral-700 text-gray-100 md:w-32 px-4 py-2 rounded-xl cursor-pointer"
+              className="bg-neutral-800 hover:bg-neutral-700 text-white px-4 py-2 rounded-lg hover:cursor-pointer"
               onClick={resetPoints}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
@@ -299,37 +247,42 @@ const Leaderboard = () => {
         </div>
         {alertMessage.visible && <Alert alertMessage={alertMessage} />}
         <Headers
-          sortUsersAlphabetically={sortUsersAlphabetically}
-          sortUsersPoints={sortUsersPoints}
+          sortUsersAlphabetically={() =>
+            sortUsers("name", alphabetSortOrder, setAlphabetSortOrder)
+          }
+          sortUsersPoints={() =>
+            sortUsers("points", pointsSortOrder, setPointsSortOrder)
+          }
           alphabetSortOrder={alphabetSortOrder}
           pointsSortOrder={pointsSortOrder}
         />
-        {isLoading && <Loader />}
-        {!isLoading && (
-          <div>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
             <UsersList
               users={paginatedUsers}
               deleteUser={deleteUser}
               updateUserPoints={updateUserPoints}
-              setUsers={setUsers}
+              setShowUserModal={setShowUserModal}
+              setCurrentUser={setCurrentUser}
             />
             {filteredData.length === 0 && (
               <p className="text-xl font-bold my-10">No users found</p>
             )}
-          </div>
+          </>
         )}
         {error && (
-          <p className="text-xl font-bold my-10">
-            Could not fetch data. Please try again
-          </p>
+          <p className="text-xl font-bold my-10">Error fetching data.</p>
         )}
         <Pagination
-          handlePageChange={handlePageChange}
           pagination={pagination}
           totalPages={totalPages}
+          handlePageChange={handlePageChange}
         />
       </div>
     </div>
   );
 };
+
 export default Leaderboard;

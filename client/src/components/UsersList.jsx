@@ -16,6 +16,7 @@ const UsersList = ({
       onReorder={setUsers}
       axis="y"
     >
+      {/* Reorder with motion, based on the user data */}
       <AnimatePresence>
         {users.map((item, index) => (
           <Reorder.Item value={item.points} key={item._id}>

@@ -67,12 +67,14 @@ const Leaderboard = () => {
       const updatedUsers = users.filter((user) => user._id !== id);
       setUsers(assignRanks(updatedUsers));
 
+      // get current page to handle edge case where the last item on a particular page is deleted
       const totalPages = Math.ceil(
         updatedUsers.length / pagination.itemsPerPage
       );
       const newCurrentPage = Math.min(pagination.currentPage, totalPages);
 
       setPagination((prev) => ({ ...prev, currentPage: newCurrentPage }));
+
       setAlertMessage({
         type: "danger",
         name: deletedUser.name,
@@ -153,6 +155,7 @@ const Leaderboard = () => {
       );
       setUsers(assignRanks(sortData(updatedUsers, "points", "desc")));
 
+      // confetti if a user reaches 100 points
       if (updatedUser.points === 100) {
         setShowConfetti(true);
       }
@@ -203,6 +206,7 @@ const Leaderboard = () => {
 
   return (
     <div className="w-full md:w-3/4 mx-auto pb-48 md:pb-96">
+      {/* Modals */}
       <AnimatePresence>
         {showAddUserModal && (
           <AddUserModal
@@ -224,6 +228,7 @@ const Leaderboard = () => {
         <h1 className="text-4xl font-semibold mb-8 text-slate-50">
           Leaderboard 🏆
         </h1>
+        {/* Search, add user and reset points */}
         <div className="flex justify-between font-semibold flex-col md:flex-row ">
           <Searchbar searchText={searchText} handleSearch={handleSearch} />
           <div className="mt-4 md:mt-0 flex gap-4 justify-between">
@@ -248,6 +253,7 @@ const Leaderboard = () => {
           </div>
         </div>
         {alertMessage.visible && <Alert alertMessage={alertMessage} />}
+        {/* Top 3 rankings */}
         {users.length > 0 && users.some((user) => user.points > 0) ? (
           <Winner
             winner={users[0]}
@@ -258,6 +264,7 @@ const Leaderboard = () => {
         ) : (
           ""
         )}
+        {/* Ranking board */}
         <div className="bg-white/90 rounded-2xl p-4 mt-4 md:mt-10">
           <h3 className="text-slate-700 font-bold text-xl">Rankings</h3>
           <Headers

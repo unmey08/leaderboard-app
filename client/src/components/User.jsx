@@ -104,6 +104,7 @@ const User = ({
                       className="text-slate-700"
                     />
                   </button>
+                  {/* Action menu for smaller screens */}
                   {isDropdownOpen && (
                     <motion.div
                       className="absolute right-10 z-100 w-44 bg-white border border-gray-200 rounded-md shadow-lg font-bold"
@@ -170,6 +171,7 @@ const User = ({
                   )}
                 </div>
               </div>
+              {/* Action menu for medium to larget screens */}
               <div className="hidden md:flex">
                 <motion.button
                   className="bg-white hover:bg-slate-100 text-slate-700 border-2 border-neutral-500 w-12 rounded-s-md cursor-pointer p-1 disabled:bg-gray-200 disabled:hover:cursor-not-allowed font-extrabold"

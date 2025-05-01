@@ -29,7 +29,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
   };
   return (
     <div
-      className={`overflow-y-auto overflow-x-auto fixed z-50 flex justify-center items-start pt-20 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ${
+      className={`overflow-y-auto overflow-x-auto fixed z-50 flex justify-center items-start pt-20 w-full md:inset-0 h-[100%] max-h-full ${
         showAddUserModal ? "visible bg-slate-700/50" : "invisible"
       }`}
     >

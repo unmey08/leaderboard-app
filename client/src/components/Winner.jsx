@@ -2,8 +2,9 @@ import goldMedal from "../assets/gold-medal.png";
 import bronzeMedal from "../assets/bronze-medal.png";
 import silverMedal from "../assets/silver-medal.png";
 import { motion } from "motion/react";
+import Confetti from "react-confetti";
 
-const Winner = ({ winner, runnerup, secondRunnerup }) => {
+const Winner = ({ winner, runnerup, secondRunnerup, showConfetti }) => {
   return (
     <section className="pt-8 md:pt-12 pb-4 mx-auto">
       <h2 className="text-2xl my-1 md:my-5 font-extrabold">Current Winners</h2>
@@ -122,6 +123,16 @@ const Winner = ({ winner, runnerup, secondRunnerup }) => {
               <span className="hidden md:inline">points</span>
             </span>
           </motion.div>
+        )}
+        {showConfetti && (
+          <Confetti
+            size={8}
+            shape="circle"
+            colors={["#f44336", "#9c27b0", "#3f51b5"]}
+            gravity={0.2}
+            run={true}
+            recycle={false}
+          />
         )}
       </div>
     </section>

@@ -105,7 +105,29 @@ const User = ({
                     />
                   </button>
                   {isDropdownOpen && (
-                    <div className="absolute right-10 z-100 w-44 bg-white border border-gray-200 rounded-md shadow-lg font-bold">
+                    <motion.div
+                      className="absolute right-10 z-100 w-44 bg-white border border-gray-200 rounded-md shadow-lg font-bold"
+                      variants={{
+                        initial: {
+                          opacity: 0,
+                        },
+                        animate: {
+                          opacity: 1,
+                          transition: {
+                            ease: ["easeInOut"],
+                          },
+                        },
+                        exit: {
+                          opacity: 0,
+                          transition: {
+                            ease: ["easeInOut"],
+                          },
+                        },
+                      }}
+                      key={item._id}
+                      whileInView="animate"
+                      initial="initial"
+                    >
                       <ul className="py-1 text-slate-700">
                         <li>
                           <button
@@ -144,7 +166,7 @@ const User = ({
                           </button>
                         </li>
                       </ul>
-                    </div>
+                    </motion.div>
                   )}
                 </div>
               </div>

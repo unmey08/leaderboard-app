@@ -31,6 +31,7 @@ const Leaderboard = () => {
     currentPage: 1,
     itemsPerPage: 5,
   });
+  const [showConfetti, setShowConfetti] = useState(false);
 
   // Sorting handlers
   const toggleSortOrder = (currentOrder) =>
@@ -135,6 +136,7 @@ const Leaderboard = () => {
 
   // update points for a user
   const updateUserPoints = async (id, delta) => {
+    setShowConfetti(false);
     try {
       const response = await fetch(`/users/${id}/points`, {
         method: "PATCH",
@@ -150,6 +152,10 @@ const Leaderboard = () => {
         user._id === id ? updatedUser : user
       );
       setUsers(assignRanks(sortData(updatedUsers, "points", "desc")));
+
+      if (updatedUser.points === 100) {
+        setShowConfetti(true);
+      }
     } catch (err) {
       console.error("Error updating user points:", err);
     }
@@ -247,6 +253,7 @@ const Leaderboard = () => {
             winner={users[0]}
             runnerup={users.length > 1 ? users[1] : null}
             secondRunnerup={users.length > 2 ? users[2] : null}
+            showConfetti={showConfetti}
           />
         ) : (
           ""

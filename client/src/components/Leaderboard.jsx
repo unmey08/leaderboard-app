@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import DOMPurify from "dompurify";
 
@@ -31,7 +31,6 @@ const Leaderboard = () => {
     currentPage: 1,
     itemsPerPage: 5,
   });
-  const addUserModalRef = useRef();
 
   // Sorting handlers
   const toggleSortOrder = (currentOrder) =>
@@ -66,6 +65,13 @@ const Leaderboard = () => {
       const deletedUser = users.filter((user) => user._id === id)[0];
       const updatedUsers = users.filter((user) => user._id !== id);
       setUsers(assignRanks(updatedUsers));
+
+      const totalPages = Math.ceil(
+        updatedUsers.length / pagination.itemsPerPage
+      );
+      const newCurrentPage = Math.min(pagination.currentPage, totalPages);
+
+      setPagination((prev) => ({ ...prev, currentPage: newCurrentPage }));
       setAlertMessage({
         type: "danger",
         name: deletedUser.name,
@@ -165,10 +171,13 @@ const Leaderboard = () => {
   );
 
   // show 5 users per page
-  const paginatedUsers = filteredData.slice(
-    (pagination.currentPage - 1) * pagination.itemsPerPage,
-    pagination.currentPage * pagination.itemsPerPage
-  );
+  const paginatedUsers =
+    searchText === ""
+      ? filteredData.slice(
+          (pagination.currentPage - 1) * pagination.itemsPerPage,
+          pagination.currentPage * pagination.itemsPerPage
+        )
+      : filteredData;
 
   const totalPages = Math.ceil(filteredData.length / pagination.itemsPerPage);
 
@@ -182,25 +191,6 @@ const Leaderboard = () => {
     }));
   };
 
-  const handleClickOutside = (e) => {
-    if (
-      addUserModalRef.current &&
-      !addUserModalRef.current.contains(e.target)
-    ) {
-      setShowAddUserModal(false);
-    }
-  };
-
-  useEffect(() => {
-    if (showAddUserModal) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [showAddUserModal]);
-
   if (isLoading) {
     return <Loader />;
   }
@@ -213,7 +203,6 @@ const Leaderboard = () => {
             showAddUserModal={showAddUserModal}
             setShowAddUserModal={setShowAddUserModal}
             addUser={addUser}
-            ref={addUserModalRef}
           />
         )}
         {showUserModal && (
@@ -296,6 +285,7 @@ const Leaderboard = () => {
           pagination={pagination}
           totalPages={totalPages}
           handlePageChange={handlePageChange}
+          searchText={searchText}
         />
       </div>
     </div>

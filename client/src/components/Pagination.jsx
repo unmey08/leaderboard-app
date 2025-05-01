@@ -1,7 +1,12 @@
 import { motion } from "motion/react";
 
-const Pagination = ({ handlePageChange, pagination, totalPages }) => {
-  if (totalPages > 1)
+const Pagination = ({
+  handlePageChange,
+  pagination,
+  totalPages,
+  searchText,
+}) => {
+  if (totalPages > 1 && searchText === "")
     return (
       <section className="flex justify-between items-center mt-4">
         <motion.button

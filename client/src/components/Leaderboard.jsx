@@ -237,6 +237,7 @@ const Leaderboard = () => {
               onClick={() => setShowAddUserModal(true)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
+              aria-label="Open add user modal"
             >
               Add user
             </motion.button>
@@ -245,6 +246,7 @@ const Leaderboard = () => {
               onClick={resetPoints}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
+              aria-label="Reset all points"
             >
               Reset points
             </motion.button>

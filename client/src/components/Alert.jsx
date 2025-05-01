@@ -3,6 +3,7 @@ const Alert = ({ alertMessage }) => {
     <div
       className="flex items-center p-4 mt-8 text-md rounded-lg bg-slate-600/60 text-white font-bold text-left"
       role="alert"
+      aria-live="polite"
     >
       <svg
         className="shrink-0 inline w-4 h-4 me-3"

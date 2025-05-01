@@ -12,7 +12,7 @@ const Headers = ({
   pointsSortOrder,
 }) => {
   return (
-    <div className="flex justify-around items-center font-bold pt-4 md:pt-8 text-slate-700">
+    <section className="flex justify-around items-center font-bold pt-4 md:pt-8 text-slate-700">
       <p className="w-1/10 hidden text-left md:block">Rank</p>
       <div
         className="w-1/3 md:text-left hover:cursor-pointer md:ml-0"
@@ -41,7 +41,7 @@ const Headers = ({
         />
       </div>
       <p className="w-1/9 text-left hidden md:block">Actions</p>
-    </div>
+    </section>
   );
 };
 export default Headers;

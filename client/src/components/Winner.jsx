@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 
 const Winner = ({ winner, runnerup, secondRunnerup }) => {
   return (
-    <div className="pt-8 md:pt-12 pb-4 mx-auto">
+    <section className="pt-8 md:pt-12 pb-4 mx-auto">
       <h2 className="text-2xl my-1 md:my-5 font-extrabold">Current Winners</h2>
       <div className="flex items-center justify-center">
         {runnerup && (
@@ -124,7 +124,7 @@ const Winner = ({ winner, runnerup, secondRunnerup }) => {
           </motion.div>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 export default Winner;

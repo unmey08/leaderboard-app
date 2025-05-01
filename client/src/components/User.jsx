@@ -81,6 +81,7 @@ const User = ({
                   setShowUserModal(true);
                   setCurrentUser(item);
                 }}
+                aria-label="Click on user"
               >
                 {item.name}
               </button>
@@ -96,6 +97,7 @@ const User = ({
                   <button
                     onClick={() => setIsDropdownOpen((prev) => !prev)}
                     className="p-2 rounded-full hover:bg-neutral-200 dark:hover:bg-neutral-700"
+                    aria-label="Action menu for user"
                   >
                     <FontAwesomeIcon
                       icon={faEllipsisV}
@@ -112,6 +114,7 @@ const User = ({
                               updateUserPoints(item._id, 10);
                               setIsDropdownOpen(false);
                             }}
+                            aria-label="Add 10 points"
                           >
                             Add 10 points
                           </button>
@@ -123,6 +126,7 @@ const User = ({
                               updateUserPoints(item._id, -10);
                               setIsDropdownOpen(false);
                             }}
+                            aria-label="Subtract 10 points"
                           >
                             Subtract 10 points
                           </button>
@@ -134,6 +138,7 @@ const User = ({
                               handleDelete(item._id);
                               setIsDropdownOpen(false);
                             }}
+                            aria-label="Delete user"
                           >
                             Delete
                           </button>
@@ -152,6 +157,7 @@ const User = ({
                   disabled={item.points >= 100}
                   whileTap={{ scale: 0.9 }}
                   whileHover={{ scale: 1.05 }}
+                  aria-label="Add 10 points"
                 >
                   +
                 </motion.button>
@@ -163,6 +169,7 @@ const User = ({
                   disabled={item.points <= 0}
                   whileTap={{ scale: 0.9 }}
                   whileHover={{ scale: 1.05 }}
+                  aria-label="Subtract 10 points"
                 >
                   -
                 </motion.button>
@@ -173,6 +180,7 @@ const User = ({
                   }}
                   whileTap={{ scale: 0.9 }}
                   whileHover={{ scale: 1.05 }}
+                  aria-label="Delete user"
                 >
                   <FontAwesomeIcon icon={faTrash} className="text-red-400" />
                 </motion.button>

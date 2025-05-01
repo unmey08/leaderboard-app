@@ -3,13 +3,14 @@ import { motion } from "motion/react";
 const Pagination = ({ handlePageChange, pagination, totalPages }) => {
   if (totalPages > 1)
     return (
-      <div className="flex justify-between items-center mt-4">
+      <section className="flex justify-between items-center mt-4">
         <motion.button
           onClick={() => handlePageChange(-1)}
           disabled={pagination.currentPage === 1}
           className="bg-slate-600/40 hover:bg-slate-600/60 text-white md:w-32 md:px-4 p-4 md:py-2 rounded-xl cursor-pointer font-semibold disabled:cursor-not-allowed disabled:bg-slate-100/50 disabled:text-slate-700 flex justify-center items-center"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
+          aria-label="Go to previous page"
         >
           <svg
             className="w-3.5 h-3.5 md:mr-2 rtl:rotate-180"
@@ -37,6 +38,7 @@ const Pagination = ({ handlePageChange, pagination, totalPages }) => {
           className="bg-slate-600/40 hover:bg-slate-600/60 text-white md:w-32 p-4 md:px-4 md:py-2 rounded-xl cursor-pointer font-semibold disabled:cursor-not-allowed disabled:bg-slate-100/50 disabled:text-slate-700 flex justify-center items-center"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
+          aria-label="Go to next page"
         >
           <span className="hidden md:block">Next</span>
           <svg
@@ -55,7 +57,7 @@ const Pagination = ({ handlePageChange, pagination, totalPages }) => {
             />
           </svg>
         </motion.button>
-      </div>
+      </section>
     );
 };
 export default Pagination;

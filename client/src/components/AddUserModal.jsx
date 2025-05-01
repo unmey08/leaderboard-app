@@ -63,6 +63,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
               type="button"
               className="bg-transparent hover:text-gray-600 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center text-slate-700 hover:cursor-pointer"
               onClick={() => setShowAddUserModal(false)}
+              aria-label="Close add user modal"
             >
               <FontAwesomeIcon icon={faClose} size="xl" />
             </button>
@@ -155,6 +156,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
               }`}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
+              aria-label="Add user button"
             >
               Add user
             </motion.button>

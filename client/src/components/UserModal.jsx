@@ -38,6 +38,7 @@ const UserModal = ({ showUserModal, setShowUserModal, user }) => {
             className="text-slate-700 bg-transparent hover:text-gray-600 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:cursor-pointer"
             data-modal-toggle="crud-modal"
             onClick={() => setShowUserModal(false)}
+            aria-label="Close user modal"
           >
             <FontAwesomeIcon icon={faClose} size="xl" />
           </button>

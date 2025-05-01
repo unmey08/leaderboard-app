@@ -225,7 +225,7 @@ const Leaderboard = () => {
         )}
       </AnimatePresence>
       <div className="py-2 md:py-8">
-        <h1 className="text-4xl font-semibold mb-8 text-slate-50">
+        <h1 className="pt-10 text-4xl font-semibold mb-8 text-slate-50">
           Leaderboard 🏆
         </h1>
         {/* Search, add user and reset points */}

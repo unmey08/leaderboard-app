@@ -12,10 +12,10 @@ const Headers = ({
   pointsSortOrder,
 }) => {
   return (
-    <div className="flex justify-around items-center font-bold md:pt-8 text-slate-700">
+    <div className="flex justify-around items-center font-bold pt-4 md:pt-8 text-slate-700">
       <p className="w-1/10 hidden text-left md:block">Rank</p>
       <div
-        className="w-1/2 md:text-left hover:cursor-pointer md:ml-0"
+        className="w-1/3 md:text-left hover:cursor-pointer md:ml-0"
         onClick={sortUsersAlphabetically}
       >
         Name{" "}
@@ -31,7 +31,7 @@ const Headers = ({
         />
       </div>
       <div
-        className="w-1/5 hover:cursor-pointer text-left"
+        className="w-1/4 hover:cursor-pointer text-left"
         onClick={sortUsersPoints}
       >
         Points{" "}

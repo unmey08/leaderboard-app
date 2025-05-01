@@ -60,7 +60,7 @@ const User = ({
               {item.rank === 2 && <img src={silverMedal} className="h-8 w-8" />}
               {item.rank === 3 && <img src={bronzeMedal} className="h-8 w-8" />}
               {item.rank > 3 && (
-                <p className="w-8 flex text-xl font-bold justify-center border border-slate-700 text-slate-700 rounded-full">
+                <p className="w-8 p-1 md:p-0 flex text-sm md:text-xl font-bold justify-center border border-slate-700 text-slate-700 rounded-full">
                   {item.rank}
                 </p>
               )}

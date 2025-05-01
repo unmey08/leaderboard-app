@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 const UserModal = ({ showUserModal, setShowUserModal, user }) => {
   return (
     <div
-      className={`overflow-y-auto overflow-x-hidden fixed z-50 flex justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ${
+      className={`overflow-y-auto overflow-x-visible fixed z-50 flex justify-center items-start pt-20 w-full md:inset-0 h-[calc(100%-1rem)] max-h-full ${
         showUserModal ? "visible bg-slate-700/50" : "invisible"
       }`}
     >
@@ -32,16 +32,16 @@ const UserModal = ({ showUserModal, setShowUserModal, user }) => {
         }}
         key="user-modal"
       >
-        <button
-          type="button"
-          className="absolute z-100 left-100 top-2 text-slate-700 bg-transparent hover:text-gray-600 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:cursor-pointer"
-          data-modal-toggle="crud-modal"
-          onClick={() => setShowUserModal(false)}
-        >
-          <FontAwesomeIcon icon={faClose} size="xl" />
-        </button>
-        <div className="flex flex-col items-center relative py-12 px-8 w-full max-w-md max-h-full bg-slate-50 rounded-lg shadow-sm text-center">
-          <p className="w-32 h-32 mb-3 rounded-full shadow-lg bg-pink-200 flex items-center justify-center font-bold text-6xl">
+        <div className="flex flex-col items-center justify-center relative p-4 w-7/8 md:w-full max-w-md max-h-full bg-slate-50 rounded-lg shadow-sm text-center font-semibold">
+          <button
+            type="button"
+            className="text-slate-700 bg-transparent hover:text-gray-600 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center hover:cursor-pointer"
+            data-modal-toggle="crud-modal"
+            onClick={() => setShowUserModal(false)}
+          >
+            <FontAwesomeIcon icon={faClose} size="xl" />
+          </button>
+          <p className="w-32 h-32 mb-3 rounded-full shadow-lg bg-pink-200 border-2 border-slate-500 text-slate-700 flex items-center justify-center font-bold text-6xl">
             {user.name.slice(0, 1).toUpperCase()}
           </p>
           <h5 className="mb-1 text-2xl font-medium text-slate-900">

@@ -12,6 +12,7 @@ import Alert from "./Alert";
 import Pagination from "./Pagination";
 import useFetchUserData from "../hooks/useFetchUserData";
 import { sortData, assignRanks } from "../utils/dataUtils";
+import Winner from "./Winner";
 
 const Leaderboard = () => {
   const [showAddUserModal, setShowAddUserModal] = useState(false);
@@ -205,7 +206,7 @@ const Leaderboard = () => {
   }
 
   return (
-    <div className="w-full md:w-3/4 mx-auto">
+    <div className="w-full md:w-3/4 mx-auto pb-48 md:pb-96">
       <AnimatePresence>
         {showAddUserModal && (
           <AddUserModal
@@ -250,7 +251,17 @@ const Leaderboard = () => {
           </div>
         </div>
         {alertMessage.visible && <Alert alertMessage={alertMessage} />}
+        {users.length > 0 && users.some((user) => user.points > 0) ? (
+          <Winner
+            winner={users[0]}
+            runnerup={users.length > 1 ? users[1] : null}
+            secondRunnerup={users.length > 2 ? users[2] : null}
+          />
+        ) : (
+          ""
+        )}
         <div className="bg-white/90 rounded-2xl p-4 mt-4 md:mt-10">
+          <h3 className="text-slate-700 font-bold text-xl">Rankings</h3>
           <Headers
             sortUsersAlphabetically={() =>
               sortUsers("name", alphabetSortOrder, setAlphabetSortOrder)

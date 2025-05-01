@@ -3,6 +3,9 @@ import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "motion/react";
 import { useForm } from "react-hook-form";
 import DOMPurify from "dompurify";
+import React from "react";
+
+global.React = React;
 
 const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
   const {
@@ -29,12 +32,12 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
   };
   return (
     <div
-      className={`overflow-y-auto overflow-x-auto fixed z-50 flex justify-center items-start pt-20 w-full md:inset-0 h-[100%] max-h-full ${
-        showAddUserModal ? "visible bg-slate-700/50" : "invisible"
+      className={`overflow-y-auto overflow-x-auto fixed z-50 flex justify-center items-start pt-20 w-full inset-0 h-[100%] max-h-full ${
+        showAddUserModal ? "visible bg-slate-700/80" : "invisible"
       }`}
     >
       <motion.div
-        className="p-4 w-full max-w-md max-h-full"
+        className="relative w-7/8 max-w-md max-h-full"
         initial={{
           opacity: 0,
           y: 60,
@@ -112,7 +115,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
                   id="age"
                   type="number"
                   {...register("age", {
-                    required: "Age is required",
+                    required: "Age is required.",
                     min: { value: 18, message: "Age must be greater than 18." },
                     max: { value: 80, message: "Age must be less than 80." },
                   })}
@@ -133,7 +136,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
                   id="address"
                   type="text"
                   {...register("address", {
-                    required: "Address is required",
+                    required: "Address is required.",
                     maxLength: {
                       value: 200,
                       message: "Maximum 200 characters.",
@@ -151,7 +154,7 @@ const AddUserModal = ({ showAddUserModal, setShowAddUserModal, addUser }) => {
             <motion.button
               type="submit"
               disabled={isSubmitting}
-              className={`text-white inline-flex items-center bg-violet-600 hover:bg-violet-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:cursor-pointer ${
+              className={`text-white inline-flex items-center bg-violet-600 hover:bg-violet-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center hover:cursor-pointer ${
                 isSubmitting ? "opacity-50 cursor-not-allowed" : ""
               }`}
               whileHover={{ scale: 1.1 }}

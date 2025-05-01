@@ -127,6 +127,7 @@ const Winner = ({ winner, runnerup, secondRunnerup, showConfetti }) => {
         {showConfetti && (
           <Confetti
             size={8}
+            numberOfPieces={500}
             shape="circle"
             colors={["#f44336", "#9c27b0", "#3f51b5"]}
             gravity={0.2}

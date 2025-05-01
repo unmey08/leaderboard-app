@@ -14,9 +14,7 @@ const useFetchUserData = () => {
         const result = await fetch(`/users`);
 
         if (!result.ok) {
-          throw new Error(
-            `Failed to fetch leaderboard data: ${result.statusText}`
-          );
+          throw new Error(`Failed to fetch leaderboard data`);
         }
 
         const response = await result.json();
@@ -40,7 +38,7 @@ const useFetchUserData = () => {
           setUsers([]);
         }
       } catch (err) {
-        console.error("Error fetching leaderboard data.", err);
+        console.error(err);
         setError(err.message || "An unexpected error occurred.");
       } finally {
         setIsLoading(false);

@@ -56,7 +56,7 @@ Follow the steps below to set up and run the application on your local machine.
    http://localhost:3200
    ```
 
-### API Endpoints
+## API Endpoints
 
 #### `GET /users`
 
@@ -91,6 +91,23 @@ Delete a user.
 #### `POST /users/reset`
 
 Reset points of all users to 0.
+
+## Testing
+
+Follow the steps below to run the test cases on your local machine.
+
+1. In the root directory, run the following command to test the API endpoints.
+
+```bash
+npm run test:server
+```
+
+2. To test the frontend components, follow the steps below to test.
+
+```bash
+cd client
+npm run test
+```
 
 ## Deployment
 

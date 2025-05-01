@@ -5,12 +5,12 @@ import { motion } from "motion/react";
 const UserModal = ({ showUserModal, setShowUserModal, user }) => {
   return (
     <div
-      className={`overflow-y-auto overflow-x-auto fixed z-50 flex justify-center items-start pt-20 w-full md:inset-0 h-[100%] max-h-full ${
-        showUserModal ? "visible bg-slate-700/50" : "invisible"
+      className={`overflow-y-auto overflow-x-auto fixed z-50 flex justify-center items-start pt-20 w-full inset-0 h-[100%] max-h-full ${
+        showUserModal ? "visible bg-slate-700/80" : "invisible"
       }`}
     >
       <motion.div
-        className="relative w-full max-w-md max-h-full"
+        className="relative w-full max-w-md max-h-full flex justify-center"
         initial={{
           opacity: 0,
           y: 60,

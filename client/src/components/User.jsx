@@ -1,10 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { animate, AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import goldMedal from "../assets/gold-medal.png";
 import silverMedal from "../assets/silver-medal.png";
 import bronzeMedal from "../assets/bronze-medal.png";
+import React from "react";
+global.React = React;
 
 const User = ({
   item,
@@ -56,9 +58,15 @@ const User = ({
         >
           <div className="flex justify-around items-center">
             <div className="w-1/10">
-              {item.rank === 1 && <img src={goldMedal} className="h-8 w-8" />}
-              {item.rank === 2 && <img src={silverMedal} className="h-8 w-8" />}
-              {item.rank === 3 && <img src={bronzeMedal} className="h-8 w-8" />}
+              {item.rank === 1 && (
+                <img src={goldMedal} alt="gold-medal" className="h-8 w-8" />
+              )}
+              {item.rank === 2 && (
+                <img src={silverMedal} alt="silver-medal" className="h-8 w-8" />
+              )}
+              {item.rank === 3 && (
+                <img src={bronzeMedal} alt="bronze-medal" className="h-8 w-8" />
+              )}
               {item.rank > 3 && (
                 <p className="w-8 p-1 md:p-0 flex text-sm md:text-xl font-bold justify-center border border-slate-700 text-slate-700 rounded-full">
                   {item.rank}
@@ -182,6 +190,7 @@ const User = ({
                   whileTap={{ scale: 0.9 }}
                   whileHover={{ scale: 1.05 }}
                   aria-label="Add 10 points"
+                  role="add"
                 >
                   +
                 </motion.button>
@@ -194,6 +203,7 @@ const User = ({
                   whileTap={{ scale: 0.9 }}
                   whileHover={{ scale: 1.05 }}
                   aria-label="Subtract 10 points"
+                  role="subtract"
                 >
                   -
                 </motion.button>
@@ -205,6 +215,7 @@ const User = ({
                   whileTap={{ scale: 0.9 }}
                   whileHover={{ scale: 1.05 }}
                   aria-label="Delete user"
+                  role="delete"
                 >
                   <FontAwesomeIcon icon={faTrash} className="text-red-400" />
                 </motion.button>

@@ -38,19 +38,13 @@ Follow the steps below to set up and run the application on your local machine.
    npm run build
    ```
 
-3. Start the application (production):
+3. Start the application:
 
    ```bash
    npm run start
    ```
 
-4. Start the application (development):
-
-   ```bash
-   npm run dev
-   ```
-
-5. Open the application in your browser at:
+4. Open the application in your browser at:
 
    ```
    http://localhost:3200
